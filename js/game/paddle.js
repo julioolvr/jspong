@@ -1,6 +1,7 @@
 define(['jaws'], function(j) {
-  return function(sprite) {
-    var speed = 2;
+  return function() {
+    var speed = 2,
+        sprite = new j.Sprite({image: 'img/paddle.png'});
 
     function collidesWithTop() {
       return sprite.y < 0;
@@ -38,6 +39,11 @@ define(['jaws'], function(j) {
 
     this.collidesWith = function(item) {
       return sprite.rect().collideRect(item.sprite.rect());
+    }
+
+    this.setPosition = function(position) {
+      if (position.x !== undefined) sprite.x = position.x;
+      if (position.y !== undefined) sprite.y = position.y;
     }
   };
 });

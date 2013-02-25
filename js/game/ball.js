@@ -1,6 +1,8 @@
 define(['jaws'], function(j) {
   return function(sprite) {
-    var hspeed = 2, vspeed = 2;
+    var hspeed = 2,
+        vspeed = 2,
+        sprite = new j.Sprite({image: 'img/ball.png'});
 
     function collidesWithTopWall() {
       return sprite.y < 0;
@@ -34,6 +36,11 @@ define(['jaws'], function(j) {
       if (paddle.sprite.rect().right > sprite.x) { hspeed = -hspeed }
       // TODO: Collision against second paddle
       // TODO: Vertical collision
+    }
+
+    this.setPosition = function(position) {
+      if (position.x !== undefined) sprite.x = position.x;
+      if (position.y !== undefined) sprite.y = position.y;
     }
   };
 });

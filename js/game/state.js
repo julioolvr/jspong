@@ -1,33 +1,35 @@
 define(['jaws', 'game/paddle', 'game/ball'], function(j, Paddle, Ball) {
-  return {
-    state: function() {
-      var player1, player2, ball;
+  return function() {
+    var player1, player2, ball;
 
-      this.setup = function() {
-        j.preventDefaultKeys(["up", "down"]);
+    this.setup = function() {
+      j.preventDefaultKeys(["up", "down"]);
 
-        player1 = new Paddle(new j.Sprite({image: 'img/paddle.png', x: 10, y: 10}));
-        player2 = new Paddle(new j.Sprite({image: 'img/paddle.png', x: j.width - 30, y: 10}));
+      player1 = new Paddle();
+      player2 = new Paddle();
 
-        ball = new Ball(new j.Sprite({image: 'img/ball.png', x: j.width / 2, y: j.height / 2}));
-      };
+      player1.setPosition({x: 10, y: 10});
+      player2.setPosition({x: j.width - 30, y: 10});
 
-      this.update = function () {
-        player1.move();
+      ball = new Ball();
+      ball.setPosition({x: j.width / 2, y: j.height / 2});
+    };
 
-        if (player1.collidesWith(ball)) {
-          ball.bounceAgainstPaddle(player1);
-        }
+    this.update = function () {
+      player1.move();
 
-        ball.move();
-      };
+      if (player1.collidesWith(ball)) {
+        ball.bounceAgainstPaddle(player1);
+      }
 
-      this.draw = function() {
-        j.clear();
-        player1.draw();
-        player2.draw();
-        ball.draw();
-      };
-    }
+      ball.move();
+    };
+
+    this.draw = function() {
+      j.clear();
+      player1.draw();
+      player2.draw();
+      ball.draw();
+    };
   }
 });
