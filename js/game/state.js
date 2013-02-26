@@ -22,6 +22,10 @@ define(['jaws', 'game/paddle', 'game/ball'], function(j, Paddle, Ball) {
         ball.bounceAgainstPaddle(player1);
       }
 
+      if (player2.collidesWith(ball)) {
+        ball.bounceAgainstPaddle(player2);
+      }
+
       ball.move();
     };
 

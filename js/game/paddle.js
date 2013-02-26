@@ -5,7 +5,8 @@ define(['jaws', 'game/drawable'], function(j, Drawable) {
     Drawable.call(self, 'img/paddle.png');
 
     // Private attributes
-    var speed = 2;
+    var speed = 2,
+        previousPosition = {};
 
     // Private methods
     function collidesWithTop() {
