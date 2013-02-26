@@ -1,27 +1,31 @@
-define(['jaws'], function(j) {
-  return function() {
-    var speed = 2,
-        sprite = new j.Sprite({image: 'img/paddle.png'});
+define(['jaws', 'game/drawable'], function(j, Drawable) {
+  function Paddle() {
+    var self = this;
 
+    Drawable.call(self, 'img/paddle.png');
+
+    // Private attributes
+    var speed = 2;
+
+    // Private methods
     function collidesWithTop() {
-      return sprite.y < 0;
+      return self.sprite.y < 0;
     }
 
     function collidesWithBottom() {
-      return sprite.rect().bottom > j.height;
+      return self.sprite.rect().bottom > j.height;
     }
 
     function moveUp() {
-      sprite.y -= speed;
+      self.sprite.y -= speed;
     }
 
     function moveDown() {
-      sprite.y += speed;
+      self.sprite.y += speed;
     }
 
-    this.sprite = sprite;
-
-    this.move = function() {
+    // Public interface
+    self.move = function() {
       if (j.pressed("up") && !collidesWithTop()) {
         moveUp();
         return;
@@ -33,17 +37,14 @@ define(['jaws'], function(j) {
       }
     }
 
-    this.draw = function() {
-      sprite.draw();
+    self.draw = function() {
+      self.sprite.draw();
     }
 
-    this.collidesWith = function(item) {
-      return sprite.rect().collideRect(item.sprite.rect());
+    self.collidesWith = function(item) {
+      return self.sprite.rect().collideRect(item.sprite.rect());
     }
+  }
 
-    this.setPosition = function(position) {
-      if (position.x !== undefined) sprite.x = position.x;
-      if (position.y !== undefined) sprite.y = position.y;
-    }
-  };
+  return Paddle;
 });
