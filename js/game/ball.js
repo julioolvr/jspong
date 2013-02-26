@@ -6,7 +6,7 @@ define(['jaws', 'game/drawable'], function(j, Drawable) {
 
     // Private attributes
     var hspeed = 2,
-        vspeed = 2,
+        vspeed = -2,
         previousPosition = {};
 
     // Private methods
@@ -18,15 +18,15 @@ define(['jaws', 'game/drawable'], function(j, Drawable) {
       return self.sprite.rect().bottom > jaws.height;
     }
 
-    function collidesWithLeftWall() {
+    // Public interface
+    self.collidesWithLeftWall = function() {
       return self.sprite.x < 0;
     }
 
-    function collidesWithRightWall() {
+    self.collidesWithRightWall = function() {
       return self.sprite.rect().right > jaws.width;
     }
 
-    // Public interface
     self.draw = function() {
       self.sprite.draw();
     }
@@ -38,7 +38,6 @@ define(['jaws', 'game/drawable'], function(j, Drawable) {
       previousPosition.bottom = previousPosition.y + self.sprite.height;
 
       if (collidesWithTopWall() || collidesWithBottomWall()) { vspeed = -vspeed; }
-      if (collidesWithRightWall() || collidesWithLeftWall()) { hspeed = -hspeed; }
       self.sprite.move(hspeed, vspeed);
     }
 
