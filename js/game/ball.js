@@ -1,64 +1,32 @@
-define(['jaws', 'game/drawable'], function(j, Drawable) {
-  function Ball() {
-    var self = this;
+define(['game/engine'], function(Q) {
+  Q.Sprite.extend("Ball", {
+    init: function(p) {
+      this._super(p, {
+        asset: 'ball.png',
+        xspeed: 2,
+        yspeed: 0
+      });
 
-    Drawable.call(self, 'img/ball.png');
+      this.add('2d');
 
-    // Private attributes
-    var hspeed = 2,
-        vspeed = -2,
-        previousPosition = {};
+      this.on('bump.left,bump.right', function(col) {
+        this.p.xspeed = -(this.p.xspeed);
+      });
 
-    // Private methods
-    function collidesWithTopWall() {
-      return self.sprite.y < 0;
-    }
-
-    function collidesWithBottomWall() {
-      return self.sprite.rect().bottom > jaws.height;
-    }
-
-    // Public interface
-    self.collidesWithLeftWall = function() {
-      return self.sprite.x < 0;
-    }
-
-    self.collidesWithRightWall = function() {
-      return self.sprite.rect().right > jaws.width;
-    }
-
-    self.draw = function() {
-      self.sprite.draw();
-    }
-
-    self.move = function () {
-      previousPosition.x = self.sprite.x;
-      previousPosition.y = self.sprite.y;
-      previousPosition.right = previousPosition.x + self.sprite.width;
-      previousPosition.bottom = previousPosition.y + self.sprite.height;
-
-      if (collidesWithTopWall() || collidesWithBottomWall()) { vspeed = -vspeed; }
-      self.sprite.move(hspeed, vspeed);
-    }
-
-    self.bounceAgainstPaddle = function(paddle) {
-      if ((paddle.sprite.rect().right > self.sprite.x &&
-          paddle.sprite.rect().right <= previousPosition.x) ||
-          (paddle.sprite.x < self.sprite.rect().right &&
-          paddle.sprite.x >= previousPosition.right)) {
-        // Horizontal collision, bounce horizontally
-        hspeed = -hspeed;
-      }
-
-      if ((paddle.sprite.rect().bottom > self.sprite.y &&
-          paddle.sprite.rect().bottom <= previousPosition.y) ||
-          (paddle.sprite.y < self.sprite.rect().bottom &&
-          paddle.sprite.y >= previousPosition.bottom)) {
-        // Vertical collision, bounce vertically
-        vspeed = -vspeed;
+      this.on('bump.top,bump.bottom', function(col) {
+        this.p.yspeed = -(this.p.yspeed);
+      });
+    },
+    step: function(dt) {
+      var coll;
+      // Check collisions against stage
+      this.p.x += this.p.xspeed;
+      this.p.y += this.p.yspeed;
+      if (coll = this.stage.search(this)) {
+        //console.log("collided!", coll);
       }
     }
-  };
+  });
 
-  return Ball;
+  return Q.Ball;
 });

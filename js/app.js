@@ -1,7 +1,10 @@
 requirejs.config({
+  paths: {
+    'quintus': 'http://cdn.html5quintus.com/v0.1.1/quintus-all'
+  },
   shim: {
-    'jaws': {
-      exports: 'jaws'
+    'quintus': {
+      exports: 'Quintus'
     }
   }
 });

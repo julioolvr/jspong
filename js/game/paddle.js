@@ -1,51 +1,18 @@
-define(['jaws', 'game/drawable'], function(j, Drawable) {
-  function Paddle() {
-    var self = this;
+define(['game/engine'], function(Q) {
+  Q.Sprite.extend("Paddle", {
+    init: function(p) {
+      this._super(p, {
+        asset: 'paddle.png',
+        speed: 2
+      });
 
-    Drawable.call(self, 'img/paddle.png');
-
-    // Private attributes
-    var speed = 2,
-        previousPosition = {};
-
-    // Private methods
-    function collidesWithTop() {
-      return self.sprite.y < 0;
+      this.add('2d');
+    },
+    step: function(dt) {
+      if (Q.inputs['down']) this.p.y += this.p.speed;
+      if (Q.inputs['up']) this.p.y -= this.p.speed;
     }
+  });
 
-    function collidesWithBottom() {
-      return self.sprite.rect().bottom > j.height;
-    }
-
-    function moveUp() {
-      self.sprite.y -= speed;
-    }
-
-    function moveDown() {
-      self.sprite.y += speed;
-    }
-
-    // Public interface
-    self.move = function() {
-      if (j.pressed("up") && !collidesWithTop()) {
-        moveUp();
-        return;
-      }
-
-      if (j.pressed("down") && !collidesWithBottom()) {
-        moveDown();
-        return;
-      }
-    }
-
-    self.draw = function() {
-      self.sprite.draw();
-    }
-
-    self.collidesWith = function(item) {
-      return self.sprite.rect().collideRect(item.sprite.rect());
-    }
-  }
-
-  return Paddle;
+  return Q.Paddle;
 });
